@@ -11,7 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [shownPersons, setShownPersons] = useState([]);
   const [message, setMessage] = useState(null);
-
+  const [isPositive, setIsPositive] = useState('positive');
 
   useEffect(() => {
     personServices
@@ -52,6 +52,17 @@ const App = () => {
                     setMessage(null)
                   }, 5000)
                 )
+                .catch(error => {
+                  setIsPositive(null)
+                  setMessage(`${person.name} has already been deleted from server`,)
+                  
+                  setTimeout(() => {
+                    setMessage(null)
+                    setIsPositive('positive')
+                  }, 5000)
+                })
+            
+            
           }
     }});
 
@@ -95,11 +106,13 @@ const App = () => {
                 personServices
                     .remove(id)
                     .then(
+                      setIsPositive(null),
                       setMessage(
                         `${person.name} has been deleted`
                       ),
                       setTimeout(() => {
                         setMessage(null)
+                        setIsPositive('positive')
                       }, 5000)
                     )
             }
@@ -111,7 +124,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} positive={isPositive} />
       <Filter event={namesToShow} />
       <h3>add a new</h3>
       <PersonForm content={formProps} />
@@ -119,7 +132,7 @@ const App = () => {
       {
         shownPersons.map(person => {
           return (
-            <div>
+            <div key={person.id}>
               <Person person={person} />
               <button onClick={() => deletePerson(person.id)}>delete</button>
             </div>

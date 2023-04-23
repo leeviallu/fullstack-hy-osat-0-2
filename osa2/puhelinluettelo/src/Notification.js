@@ -1,12 +1,14 @@
 import './Notification.css';
 
-const Notification = ({ message }) => {
+const Notification = ({ message, positive }) => {
     if (message === null) {
       return null
     }
+
+    const computedClassName = positive ? 'positive' : 'negative';
   
     return (
-      <div className="error">
+      <div className={computedClassName}>
         {message}
       </div>
     )
