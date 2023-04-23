@@ -3,7 +3,7 @@ import personServices from './services/persons';
 import Notification from './Notification';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
-import Persons from './Persons';
+import Person from './Person';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -86,6 +86,26 @@ const App = () => {
     setShownPersons(filteredPersons)
   }
 
+
+  const deletePerson = (id) => {
+    persons.forEach(person => {
+        if (person.id === id) {
+            console.log(person)
+            if(window.confirm(`Delete ${person.name}?`)) {
+                personServices
+                    .remove(id)
+                    .then(
+                      setMessage(
+                        `${person.name} has been deleted`
+                      ),
+                      setTimeout(() => {
+                        setMessage(null)
+                      }, 5000)
+                    )
+            }
+        }
+    })
+  }
   const formProps = {persons, addPerson, newName, handleNameChange, newNumber, handleNumberChange}
 
   return (
@@ -96,7 +116,16 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm content={formProps} />
       <h3>Numbers</h3>
-      <Persons persons={shownPersons} />
+      {
+        shownPersons.map(person => {
+          return (
+            <div>
+              <Person person={person} />
+              <button onClick={() => deletePerson(person.id)}>delete</button>
+            </div>
+            )
+        })
+      }
     </div>
   )
 
