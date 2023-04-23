@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react';
+import personServices from './services/persons';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -11,42 +11,50 @@ const App = () => {
   const [shownPersons, setShownPersons] = useState([]);
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data);
-    })}, [])
-    
+    personServices
+      .getAll()
+      .then(response => {
+        setPersons(response.data);
+      })}, [persons, setPersons])
+
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
     setNewNumber(event.target.value)
   }
-
 
   const addPerson = (event) => {
     let personIsUnique = true;
     event.preventDefault()
-    const nameObject = {
+    const personObject = {
       name: newName,
       number: newNumber,
     }
     persons.forEach(person => {
-      if (newName === person.name || newNumber === person.number) {
-        window.alert(`${nameObject.name} or ${nameObject.number} is already added to phonebook`);
+      if (newNumber === person.number) {
+        window.alert(`${personObject.number} is already added to phonebook`);
         personIsUnique = false;
-      }
-    })
+      } else if (newName === person.name && newNumber !== person.number) {
+          personIsUnique = false;
+          if(window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)) {
+            personServices
+                .update(person.id, personObject)
+            window.location.reload()
+          }
+    }});
+
     if(personIsUnique) {
-      setPersons(persons.concat(nameObject));
-      setShownPersons(persons.concat(nameObject));
+      personServices
+        .create(personObject)
+        .then(response => {
+          console.log('post' ,response)
+          setPersons(persons.concat(personObject));
+        })
     }
-    setNewNumber('')
     setNewName('')
+    setNewNumber('')
   }
 
   const namesToShow = (event) => {
