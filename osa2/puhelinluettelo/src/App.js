@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import personServices from './services/persons';
+import Notification from './Notification';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -9,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [shownPersons, setShownPersons] = useState([]);
+  const [message, setMessage] = useState(null);
+
 
   useEffect(() => {
     personServices
@@ -41,7 +44,14 @@ const App = () => {
           if(window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)) {
             personServices
                 .update(person.id, personObject)
-            window.location.reload()
+                .then(
+                  setMessage(
+                    `Number for ${person.name} has been changed`
+                  ),
+                  setTimeout(() => {
+                    setMessage(null)
+                  }, 5000)
+                )
           }
     }});
 
@@ -52,10 +62,20 @@ const App = () => {
           console.log('post' ,response)
           setPersons(persons.concat(personObject));
         })
+        .then(
+          setMessage(
+            `Added ${personObject.name}`
+          ),
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        )
     }
     setNewName('')
     setNewNumber('')
   }
+
+  
 
   const namesToShow = (event) => {
     const filteredPersons = persons
@@ -71,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter event={namesToShow} />
       <h3>add a new</h3>
       <PersonForm content={formProps} />
