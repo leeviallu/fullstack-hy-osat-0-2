@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import {useEffect, useState} from 'react'
+import Filter from './Filter';
+import ListOfCountries from './ListOfCountries';
+import CountryPage from './CountryPage';
 
-function App() {
+
+const App = () => {
+  const baseUrl = 'https://restcountries.com/v3.1/all';
+  const [countries, setCountries] = useState([])
+  const [visibleCountries, setVisibleCountries] = useState([])
+
+  useEffect(() => {
+    axios
+      .get(baseUrl)
+      .then(response => {
+        setCountries(response.data);
+  })}, [])
+
+
+  const countriesToShow = (event) => {
+    const filteredCountries = countries.filter(country => {
+        return country.name.common.toLowerCase().includes(event.target.value.toLowerCase())
+      })
+      setVisibleCountries(filteredCountries);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Filter event={countriesToShow} />
+      {
+        (visibleCountries.length <= 10) 
+        ?
+        <div>
+          {
+            (visibleCountries.length === 1) 
+            ?
+            visibleCountries.map(country => {
+              return (
+                <CountryPage key={country} country={country} /> 
+              )
+            })
+            :
+            <ListOfCountries list={visibleCountries} />
+          }
+        </div>
+        :
+        <p>Too many matches, specify another filter</p>
+      }
     </div>
   );
 }
