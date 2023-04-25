@@ -18,7 +18,7 @@ const App = () => {
       .getAll()
       .then(response => {
         setPersons(response.data);
-      })}, [persons, setPersons])
+      })}, [])
 
 
   const handleNameChange = (event) => {
@@ -53,6 +53,7 @@ const App = () => {
                   }, 5000)
                 )
                 .catch(error => {
+                  console.log(person.id, personObject)
                   setIsPositive(null)
                   setMessage(`${person.name} has already been deleted from server`,)
                   
@@ -132,7 +133,7 @@ const App = () => {
       {
         shownPersons.map(person => {
           return (
-            <div key={person.id}>
+            <div key={person.name}>
               <Person person={person} />
               <button onClick={() => deletePerson(person.id)}>delete</button>
             </div>
