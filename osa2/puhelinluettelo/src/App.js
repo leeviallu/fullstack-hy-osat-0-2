@@ -12,13 +12,16 @@ const App = () => {
   const [shownPersons, setShownPersons] = useState([]);
   const [message, setMessage] = useState(null);
   const [isPositive, setIsPositive] = useState('positive');
+  const [callRender, setCallRender] = useState(false);
 
   useEffect(() => {
     personServices
       .getAll()
       .then(response => {
         setPersons(response.data);
-      })}, [])
+        setCallRender(false)
+      })
+  }, [callRender])
 
 
   const handleNameChange = (event) => {
@@ -50,7 +53,8 @@ const App = () => {
                   ),
                   setTimeout(() => {
                     setMessage(null)
-                  }, 5000)
+                  }, 5000),
+                  setCallRender(true)
                 )
                 .catch(error => {
                   console.log(person.id, personObject)
@@ -80,7 +84,8 @@ const App = () => {
           ),
           setTimeout(() => {
             setMessage(null)
-          }, 5000)
+          }, 5000),
+          setCallRender(true)
         )
     }
     setNewName('')
@@ -114,7 +119,8 @@ const App = () => {
                       setTimeout(() => {
                         setMessage(null)
                         setIsPositive('positive')
-                      }, 5000)
+                      }, 5000),
+                      setCallRender(true)
                     )
             }
         }
