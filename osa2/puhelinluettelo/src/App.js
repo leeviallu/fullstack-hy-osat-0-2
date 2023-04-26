@@ -87,6 +87,16 @@ const App = () => {
           }, 5000),
           setCallRender(true)
         )
+        .catch(error => {
+          setIsPositive(null)
+          setMessage(
+            `${error.response.data.error}`
+          )
+          setTimeout(() => {
+            setIsPositive('positive')
+            setMessage(null)
+          }, 5000)
+        })
     }
     setNewName('')
     setNewNumber('')
