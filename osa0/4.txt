@@ -1,0 +1,16 @@
+title Adding Notes
+
+Selain->Palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note right of Palvelin: HTML muokataan JS koodin mukaisesti
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+Palvelin->Selain: HTML koodi
+
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+Palvelin->Selain: main.css
+Palvelin->Selain: main.js
+
+
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Palvelin->Selain: Käsitelty sisältö
+note left of Selain: Tapahumankäsittelijän suorittaminen renderöi muistiinpanot näytölle

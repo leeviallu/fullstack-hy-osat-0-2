@@ -1,0 +1,6 @@
+title Adding Notes on SPA
+
+Selain->Palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/spa/new_note_spa
+note right of Palvelin: Lähetetään palvelimelle uuden muistiinpanon koodi
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa/new_note_spa
+Palvelin->Selain: Uuden muistiinpanon koodi

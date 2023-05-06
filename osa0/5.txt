@@ -1,0 +1,13 @@
+
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+Palvelin->Selain: SPA muodossa oleva HTML koodi
+
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa/main.css
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa/main.js
+Palvelin->Selain: main.css
+Palvelin->Selain: main.js
+
+
+Selain->Palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Palvelin->Selain: Käsitelty sisältö
+note left of Selain: Tapahumankäsittelijän suorittaminen renderöi muistiinpanot näytölle
